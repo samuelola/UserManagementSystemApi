@@ -35,76 +35,16 @@ php artisan db:seeder
 ```
 php artisan serve
 ```
-
-### Step 4 - Configure SQLite for tests
-In the config/database.php configure sqlite to work in memory
-```
-[...]
-'connections' => [
-
-    'sqlite' => [
-        'driver' => 'sqlite',
-        'database' => ':memory:',
-        'prefix' => '',
-    ],
-    
-    ...
-]
-[...]
-```
-
-### Step 4 - Configure phpunit.xml
-In the root dir of the project adjust phpunit.xml adding DB_CONNECTION
-```
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-    </php>
-```
-
-### Step 5 - Alter TestCase to prepare project to tests
-In the tests/TestCase.php add commands necessary to prepare database for tests
-```php
-<?php
-
-namespace Tests;
-
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Facades\Artisan;
-
-abstract class TestCase extends BaseTestCase
-{
-    use CreatesApplication, DatabaseMigrations;
-
-    public function setUp()
-    {
-        parent::setUp();
-        Artisan::call('db:seed');
-        Artisan::call('passport:install');        
-    }
-}
-
-```
-
-### Step 6 - Add script to run tests
-In the composer.json, add script to run tests
-```
-   "scripts": {
-        "test" : [
-            "vendor/bin/phpunit"
-        ]
-    ... 
-    },  
-```
-
-### Step 7 - Generate Feature Test for LoginController
+### Step 4 - Generate Feature Test for RegisterController
 In the terminal run
 ```
-php artisan make:test Auth/LoginControllerTest
+php artisan make:test LoginControllerTest
+```
+```
+php artisan make:test RegisterControllerTest
+```
+```
+php artisan make:test UserTest
 ```
 
 ### Step 8 - Add tests to LoginController
