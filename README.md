@@ -1,66 +1,268 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Api Auth Tests - Step by Step
+Pratical step-by-step how to build auth tests in a RESTful API made in Laravel 5.5
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Prerequisites
+* Apache
+* PHP
+* Composer
+* [Laravel new app created](https://github.com/cantellir/laravel-new-app)
+* [Laravel api auth with passport done](https://github.com/cantellir/laravel-api-auth)
 
-## About Laravel
+### Initial notes
+The project in this repo contains all the steps finalized
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Step 1 - Add seeds to register user for tests
+In terminal run
+```
+php artisan make:seeder UsersTableSeeder
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Edit 'database/seeds/UsersTableSeeder.php' file
+```php
+<?php
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+use Illuminate\Database\Seeder;
+use App\User;
 
-## Learning Laravel
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    public function run()
+    {   
+        //clear table
+        User::truncate();
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+        User::create([
+            'name' => 'username',
+            'email' => 'user@email.com',
+            'password' => bcrypt('userpass'),
+        ]);
+    }
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Step 2 - Call new seeder
+Adjust seeds/DatabaseSeeder.php to call users seed
+```php
+    public function run()
+    {
+        $this->call(UsersTableSeeder::class);
+    }
+```
 
-## Laravel Sponsors
+### Step 3 - Configure SQLite for tests
+In the config/database.php configure sqlite to work in memory
+```
+[...]
+'connections' => [
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    'sqlite' => [
+        'driver' => 'sqlite',
+        'database' => ':memory:',
+        'prefix' => '',
+    ],
+    
+    ...
+]
+[...]
+```
 
-### Premium Partners
+### Step 4 - Configure phpunit.xml
+In the root dir of the project adjust phpunit.xml adding DB_CONNECTION
+```
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+    </php>
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Step 5 - Alter TestCase to prepare project to tests
+In the tests/TestCase.php add commands necessary to prepare database for tests
+```php
+<?php
 
-## Contributing
+namespace Tests;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Artisan;
 
-## Code of Conduct
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication, DatabaseMigrations;
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    public function setUp()
+    {
+        parent::setUp();
+        Artisan::call('db:seed');
+        Artisan::call('passport:install');        
+    }
+}
 
-## Security Vulnerabilities
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Step 6 - Add script to run tests
+In the composer.json, add script to run tests
+```
+   "scripts": {
+        "test" : [
+            "vendor/bin/phpunit"
+        ]
+    ... 
+    },  
+```
 
-## License
+### Step 7 - Generate Feature Test for LoginController
+In the terminal run
+```
+php artisan make:test Auth/LoginControllerTest
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Step 8 - Add tests to LoginController
+In the tests/Feature/Auth/LoginControllerTest.php add tests
+for validations, success login and logout
+```php
+<?php
+
+namespace Tests\Feature\Auth;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+
+class LoginControllerTest extends TestCase
+{
+    public function testRequireEmailAndLogin()
+    {
+        $this->json('POST', 'api/login')
+            ->assertStatus(422)                
+            ->assertJson([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => ['The email field is required.'],
+                    'password' => ['The password field is required.']
+                ]
+            ]);
+                        
+    }
+
+    public function testUserLoginSuccessfully()
+    {
+        $user = ['email' => 'user@email.com', 'password' => 'userpass'];
+        $this->json('POST', 'api/login', $user)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'token',
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at'
+                ]
+            ]);
+    }
+
+    public function testLogoutSuccessfully()
+    {
+        $user = ['email' => 'user@email.com',
+            'password' => 'userpass'
+        ];
+        
+        Auth::attempt($user);
+        $token = Auth::user()->createToken('nfce_client')->accessToken;
+        $headers = ['Authorization' => "Bearer $token"];
+        $this->json('GET', 'api/logout', [], $headers)
+            ->assertStatus(204);
+    }
+}
+```
+
+### Step 9 - Generate Feature Test for RegisterController
+In the terminal run
+```
+php artisan make:test Auth/RegisterControllerTest
+```
+
+### Step 10 - Add tests to RegisterController
+In the tests/Feature/Auth/RegisterControllerTest.php add tests
+for validations and success register
+```php
+class RegisterControllerTest extends TestCase
+{    
+    public function testRegisterSuccessfully()
+    {
+        $register = [
+            'name' => 'UserTest',
+            'email' => 'user@test.com',
+            'password' => 'testpass',
+            'password_confirmation' => 'testpass'
+        ];
+
+        $this->json('POST', 'api/register', $register)
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'token',
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at'
+                ]                
+            ]);
+    }
+
+    public function testRequireNameEmailAndPassword()
+    {
+        $this->json('POST', 'api/register')
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'name' => ['The name field is required.'],
+                    'email' => ['The email field is required.'],
+                    'password' => ['The password field is required.'],                
+                ]
+            ]);
+    }
+
+    public function testRequirePasswordConfirmation()
+    {
+        $register = [
+            'name' => 'User',
+            'email' => 'user@test.com',
+            'password' => 'userpass'
+        ];
+
+        $this->json('POST', 'api/register', $register)
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'password' => ['The password confirmation does not match.']
+                ]
+            ]);
+    }
+}
+```
+
+### Step 11 - Run tests
+In the terminal run
+```
+composer test
+```
+
+## References
+* [Laravel docs](https://laravel.com/docs/5.5) - Laravel Documentation
+* [Laravel Passport Post](https://laravelcode.com/post/laravel-passport-create-rest-api-with-authentication) - Create REST API with authentication
+* [Laravel API Tutorial](https://www.toptal.com/laravel/restful-laravel-api-tutorial) - How to Build and Test a RESTful API
