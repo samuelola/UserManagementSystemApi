@@ -31,9 +31,8 @@ Run in terminal to run the RoleSeeder in the seeders folder
 ```
 php artisan db:seeder
 ```
-To Start the application run in the terminal
-```
 ### Step 3 - Run in terminal to start the application
+```
 php artisan serve
 ```
 
