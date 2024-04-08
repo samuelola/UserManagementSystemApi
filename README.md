@@ -20,23 +20,24 @@ To Install the vendor folder run in the terminal
 ```
 composer install
 ```
-Rename the env.example file to .env
+Rename the env.example file to .env and update you database connections.
 
+### Step 2 - Run Migrations
+With all the migrations created in the database/migrations folder.Run in terminal
+```
+php artisan migrate
+```
+Run in terminal to run the RoleSeeder in the seeders folder
+```
+php artisan db:seeder
+```
 To Start the application run in the terminal
 ```
+### Step 3 - Run in terminal to start the application
 php artisan serve
 ```
 
-### Step 2 - Call new seeder
-Adjust seeds/DatabaseSeeder.php to call users seed
-```php
-    public function run()
-    {
-        $this->call(UsersTableSeeder::class);
-    }
-```
-
-### Step 3 - Configure SQLite for tests
+### Step 4 - Configure SQLite for tests
 In the config/database.php configure sqlite to work in memory
 ```
 [...]
