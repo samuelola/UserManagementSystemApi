@@ -1,49 +1,30 @@
-# Laravel Api Auth Tests - Step by Step
-Pratical step-by-step how to build auth tests in a RESTful API made in Laravel 5.5
+# Management System API - Step by Step
+A User Management System API using Laravel. This API will be responsible for handling user profiles within an application, including operations such as creating, updating, viewing, and deleting users.
 
 ### Prerequisites
 * Apache
 * PHP
 * Composer
-* [Laravel new app created](https://github.com/cantellir/laravel-new-app)
-* [Laravel api auth with passport done](https://github.com/cantellir/laravel-api-auth)
+* Laravel new app created
+* Laravel api auth with passport done
 
 ### Initial notes
 The project in this repo contains all the steps finalized
 
-### Step 1 - Add seeds to register user for tests
-In terminal run
+###  Setup instructions for the project.
+To clone the Application run in terminal
 ```
-php artisan make:seeder UsersTableSeeder
+git clone 
 ```
+To Install the vendor folder run in the terminal
+```
+composer install
+```
+Rename the env.example file to .env
 
-Edit 'database/seeds/UsersTableSeeder.php' file
-```php
-<?php
-
-use Illuminate\Database\Seeder;
-use App\User;
-
-class UsersTableSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-
-    public function run()
-    {   
-        //clear table
-        User::truncate();
-
-        User::create([
-            'name' => 'username',
-            'email' => 'user@email.com',
-            'password' => bcrypt('userpass'),
-        ]);
-    }
-}
+To Start the application run in the terminal
+```
+php artisan serve
 ```
 
 ### Step 2 - Call new seeder
@@ -259,10 +240,5 @@ class RegisterControllerTest extends TestCase
 ### Step 11 - Run tests
 In the terminal run
 ```
-composer test
+php artisan test
 ```
-
-## References
-* [Laravel docs](https://laravel.com/docs/5.5) - Laravel Documentation
-* [Laravel Passport Post](https://laravelcode.com/post/laravel-passport-create-rest-api-with-authentication) - Create REST API with authentication
-* [Laravel API Tutorial](https://www.toptal.com/laravel/restful-laravel-api-tutorial) - How to Build and Test a RESTful API
