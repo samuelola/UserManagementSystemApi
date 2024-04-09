@@ -7,7 +7,9 @@ use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    
+    /**
+     * Test Login for wrong email.
+     */  
     public function testUserWrongEmail()
     {
         $credential = [
@@ -16,6 +18,10 @@ class LoginControllerTest extends TestCase
         ];
         $this->post('/api/login',$credential)->assertStatus(404);        
     }
+
+    /**
+     * Test Login for user with wrong password.
+     */
     public function testUserWrongPassword()
     {
         $credential = [
@@ -24,7 +30,10 @@ class LoginControllerTest extends TestCase
         ];
         $this->post('/api/login',$credential)->assertStatus(404);        
     }
-    public function testUserLogin()
+    /**
+     * Test Login for user with correct credentials.
+     */
+    public function testUserLoginWithCorrectCredentials()
     {
         $credential = [
             'email' => 'john.doe@gmail.com',
@@ -32,7 +41,9 @@ class LoginControllerTest extends TestCase
         ];
         $this->post('/api/login',$credential)->assertStatus(200);            
     }
-
+    /**
+     * Test Login for user with wrong credentials.
+     */
     public function testUserLoginWithWrongCredentials()
     {
         $user = User::factory()->create();
@@ -42,4 +53,5 @@ class LoginControllerTest extends TestCase
         ];
         $this->post('/api/login',$credential)->assertStatus(404);           
     }
+    
 }
