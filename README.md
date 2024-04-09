@@ -48,9 +48,9 @@ php artisan make:test UserTest
 ```
 
 ### Tests
-## Tests for registration
- -Test Registration for all empty fields.
- -Test Registration for name field less than three.
+## Tests for registration:
+1.Test Registration for all empty fields.
+2.Test Registration for name field less than three.
  -Test Registration for password that do not contain mixed characters.
  -Test Registration for password that is the same with the confirm password.
  -Test Registration for Admin (Role_id=1) with a unique email.
