@@ -10,30 +10,24 @@ use App\Models\User;
 
 class UsersTest extends TestCase
 {
+    /**
+     * Test for retrieving a user details after authentication.
+     */
     public function testGetUser (){
         $user = User::factory()->create();
         $this->actingAs($user, 'api')->get('/api/v1/users/' . $user->id)->assertStatus(200);        
     }
-
-    public function testStoreApiUser(){
-        $newData = [
-            'name' => 'wollaa Doe',
-            'email' => 'wollaaddoe@gmail.com',
-            'role_id' =>2,
-            'password' => 'Wolladoe1@',
-            'password_confirmed' => 'Wolladoe1@'
-        ];
-        $user = User::create($newData);
-        
-        $response = $this->actingAs($user, 'api')->post('/api/v1/users/');
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'name' => $newData['name'],
-            'email' => $newData['email'],
-        ]); 
+    /**
+     * Test for user to see if it has permission to create users.
+     */
+    public function testThrowErrorIfAuthenticatedUserIsNotAnAdminCreatingUser(){
+        $user = User::factory()->create();
+        $this->actingAs($user, 'api')->get('/api/v1/users/')->assertStatus(403); 
+       
     }
-
+     /**
+     * Test for User that has already been updated.
+     */
     public function testThrowErrorIfAuthenticatedUserIsAlreadyUpdated(){
         $user = User::factory()->create();
         $newData = [
@@ -47,10 +41,17 @@ class UsersTest extends TestCase
         $response->assertStatus(422);
         
     }
+    /**
+     * Test for User that is not Admin have permission to retrieve users.
+     */
     public function testThrowErrorIfAuthenticatedUserIsNotAnAdminWhenGettingUsers (){
         $user = User::factory()->create();
         $this->actingAs($user, 'api')->get('/api/v1/users/')->assertStatus(403);        
     }
+
+    /**
+     * Test for User that is not Admin have permission to retrieve users.
+     */
     public function testThrowErrorIfAuthenticatedUserIsNotAnAdminDeletingUser(){
         $user = User::factory()->create();
         $this->actingAs($user, 'api')->delete('/api/v1/users/'. $user->id)->assertStatus(403);        

@@ -54,6 +54,7 @@ class UserController extends BaseController
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        Gate::authorize('create-Update-delete-users');
         $user = User::create($input);
         return $this->sendResponse(new UserResource($user), 'user created successfully.');
 
