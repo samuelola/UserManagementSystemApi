@@ -48,28 +48,14 @@ php artisan make:test UserTest
 ```
 
 ## Tests
-## Tests for registration:
-1.Test Registration for all empty fields.
-2.Test Registration for name field less than three.
- -Test Registration for password that do not contain mixed characters.
- -Test Registration for password that is the same with the confirm password.
- -Test Registration for Admin (Role_id=1) with a unique email.
 
  ## Tests for registration:
-
 1. Test Registration for all empty fields.
-   sudo apt update
-2. Install required dependencies:
-   sudo apt install apt-transport-https ca-certificates curl software-properties-common
-3. Add the Docker repository to APT sources:
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-4. Update your package database with the Docker packages from the newly added repo:
-   sudo apt update
-5. Install Docker:
-   sudo apt install docker-ce
-6. Verify that Docker is installed correctly:
-   sudo systemctl status docker
+2. Test Registration for name field less than three.
+3. Test Registration for password that do not contain mixed characters.
+4. Test Registration for password that is the same with the confirm password.
+5. Test Registration for Admin (Role_id=1) with a unique email.
+
 
 ### Step 10 - Add tests to RegisterController
 In the tests/Feature/Auth/RegisterControllerTest.php add tests
