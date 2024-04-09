@@ -55,9 +55,9 @@ php artisan make:test UserTest
  -Test Registration for password that is the same with the confirm password.
  -Test Registration for Admin (Role_id=1) with a unique email.
 
- #### For Ubuntu:
+ ## Tests for registration:
 
-1. Update your existing list of packages:
+1. Test Registration for all empty fields.
    sudo apt update
 2. Install required dependencies:
    sudo apt install apt-transport-https ca-certificates curl software-properties-common
