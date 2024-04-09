@@ -47,21 +47,27 @@ php artisan make:test RegisterControllerTest
 php artisan make:test UserTest
 ```
 
-## Tests
+### Tests Cases
 
- ## Tests for registration:
+ #### Tests for Registration:
 1. Test Registration for all empty fields.
 2. Test Registration for name field less than three.
 3. Test Registration for password that do not contain mixed characters.
 4. Test Registration for password that is the same with the confirm password.
 5. Test Registration for Admin (Role_id=1) with a unique email.
 
+ #### Tests for Login:
+1. Test Login for user with wrong password.
+2. Test Login for user with correct credentials.
+3. Test Login for user with wrong credentials.
 
-### Step 10 - Add tests to RegisterController
-In the tests/Feature/Auth/RegisterControllerTest.php add tests
-for validations and success register
-```
-```
+ #### Tests for Users:
+1. Test for retrieving a user details after authentication..
+2. Test for user to see if it has permission to create users.
+3. Test for User that has already been updated.
+4. Test for User that is not Admin have permission to retrieve users.
+5. Test for User that is not Admin have permission to delete users.
+
 
 ### Step 11 - Run tests
 In the terminal run
