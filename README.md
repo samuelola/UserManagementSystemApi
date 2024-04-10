@@ -22,20 +22,27 @@ composer install
 ```
 Rename the env.example file to .env and update you database connections.
 
-### Step 2 - Run Migrations
+### Step 2 - Install Laravel Passport
+Run in terminal to generate passport migration files and client ID
+```
+php artisan passport:install
+php artisan passport:client --personal
+```
+
+### Step 3 - Run Migrations
 With all the migrations created in the database/migrations folder.Run in terminal
 ```
 php artisan migrate
 ```
 Run in terminal to run the RoleSeeder in the seeders folder
 ```
-php artisan db:seeder
+php artisan db:seed
 ```
-### Step 3 - Run in terminal to start the application
+### Step 4 - Run in terminal to start the application
 ```
 php artisan serve
 ```
-### Step 4 - Generate Feature Test for RegisterController
+### Step 5 - Generate Feature Test for RegisterController
 In the terminal run
 ```
 php artisan make:test LoginControllerTest
@@ -69,7 +76,7 @@ php artisan make:test UserTest
 5. Test for User that is not Admin have permission to delete users.
 
 
-### Step 11 - Run tests
+### Step 6 - Run tests
 In the terminal run
 ```
 php artisan test
