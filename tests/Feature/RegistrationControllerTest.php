@@ -31,7 +31,7 @@ class RegistrationControllerTest extends TestCase
        }
     
      /**
-     * Test Registration for password that do not contain mixed characters .
+     * Test Registration for password that do not contain mixed characters.
      */  
      public function testRegistrationThrowErrorIfPasswordContainNoMixedCharacters(){
           $this->post('api/register',['password'=>'12388383838'])
