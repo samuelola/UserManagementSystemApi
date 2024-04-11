@@ -33,7 +33,7 @@ class AuthController extends BaseController
     {
         // failure to authenticate
         if(!Auth::attempt($LoginRequest->only('email','password'))){
-            return $this->sendError('Unauthorised.', ['error'=>'Email or Password does not match with our record.']);
+            return $this->sendError('Login failed, please try again.', ['error'=>'Email or Password does not match with our record.']);
         }
         // successfull authentication
         $user = User::find(Auth::user()->id);
