@@ -22,16 +22,7 @@ composer install
 ```
 Rename the env.example file to .env and update you database connections.
 
-### Step 2 - Install Laravel Passport
-Run in terminal to generate passport migration files and client ID
-```
-php artisan passport:install
-```
-```
-php artisan passport:client --personal
-```
-
-### Step 3 - Run Migrations
+### Step 2 - Run Migrations
 With all the migrations created in the database/migrations folder.Run in terminal
 ```
 php artisan migrate
@@ -39,6 +30,11 @@ php artisan migrate
 Run in terminal to run the RoleSeeder in the seeders folder
 ```
 php artisan db:seed
+```
+### Step 3 - Create Laravel Personal Access Client
+Run in terminal to generate client secret and client ID
+```
+php artisan passport:client --personal
 ```
 ### Step 4 - Run in terminal to start the application
 ```
