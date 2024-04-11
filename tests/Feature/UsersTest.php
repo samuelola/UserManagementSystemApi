@@ -50,7 +50,7 @@ class UsersTest extends TestCase
     }
 
     /**
-     * Test for User that is not Admin have permission to retrieve users.
+     * Test for User that is not Admin have permission to delete users.
      */
     public function testThrowErrorIfAuthenticatedUserIsNotAnAdminDeletingUser(){
         $user = User::factory()->create();
