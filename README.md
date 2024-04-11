@@ -5,8 +5,8 @@ A User Management System API using Laravel. This API will be responsible for han
 * Apache
 * PHP
 * Composer
-* Laravel new app created
-* Laravel api auth with passport done
+* New Laravel App Installed
+* Laravel Passport
 
 ### Initial notes
 The project in this repo contains all the steps finalized
@@ -26,6 +26,8 @@ Rename the env.example file to .env and update you database connections.
 Run in terminal to generate passport migration files and client ID
 ```
 php artisan passport:install
+```
+```
 php artisan passport:client --personal
 ```
 
