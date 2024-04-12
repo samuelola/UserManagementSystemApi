@@ -40,18 +40,6 @@ php artisan passport:client --personal
 ```
 php artisan serve
 ```
-### Step 5 - Generate Feature Test for RegisterController
-In the terminal run
-```
-php artisan make:test LoginControllerTest
-```
-```
-php artisan make:test RegisterControllerTest
-```
-```
-php artisan make:test UserTest
-```
-
 ### Tests Cases
 
  #### Tests for Registration:
