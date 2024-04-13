@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\ApiController as BaseController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use Validator;
 use App\Http\Resources\User as UserResource;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Libraries\Utilities;
 
-class UserController extends BaseController
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('create-delete-users');
         $users = User::all();
-        return $this->sendResponse(UserResource::collection($users), 'users retrieved successfully.');
+        return Utilities::sendResponse(UserResource::collection($users), 'users retrieved successfully.');
     }
 
     /**
@@ -36,9 +34,8 @@ class UserController extends BaseController
      */
     public function store(UserRequest $UserRequest)
     {
-        Gate::authorize('create-delete-users');
         $createuser = User::create($UserRequest->validated());
-        return $this->sendResponse(new UserResource($createuser), 'user created successfully.');
+        return Utilities::sendResponse(new UserResource($createuser), 'user created successfully.');
     }
 
     /**
@@ -48,9 +45,9 @@ class UserController extends BaseController
     {
         $user = User::find($id);
         if (is_null($user)) {
-            return $this->sendError('User not found.');
+            return Utilities::sendError('User not found.');
         }
-        return $this->sendResponse(new UserResource($user), 'User retrieved successfully.');
+        return Utilities::sendResponse(new UserResource($user), 'User retrieved successfully.');
     }
 
     /**
@@ -67,7 +64,7 @@ class UserController extends BaseController
     public function update(UpdateUserRequest $UpdateUserRequest, User $user)
     {   
         $user->update($UpdateUserRequest->validated());
-        return $this->sendResponse([], 'User updated successfully.');
+        return Utilities::sendResponse([], 'User updated successfully.');
     }
 
 
@@ -76,8 +73,8 @@ class UserController extends BaseController
      */
     public function destroy(User $user)
     {
-        Gate::authorize('create-delete-users');
+        $this->authorize('delete', $user);
         $user->delete();
-        return $this->sendResponse([], 'User deleted successfully.');    
+        return Utilities::sendResponse([], 'User deleted successfully.');    
     }
 }
