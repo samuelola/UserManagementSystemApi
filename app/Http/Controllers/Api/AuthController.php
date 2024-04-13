@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\ApiController as BaseController;
-use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Libraries\Utilities;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     /**
     * Register api
@@ -19,8 +19,7 @@ class AuthController extends BaseController
     */
     public function register(RegisterRequest $RegisterRequest){
         $usercreate = User::create($RegisterRequest->validated());
-        $success['info'] =  $usercreate;
-        return $this->sendResponse($success, 'User register successfully.');
+        return Utilities::sendResponse($usercreate, 'User register successfully.');
     }
 
    /**
@@ -33,13 +32,13 @@ class AuthController extends BaseController
     {
         // failure to authenticate
         if(!Auth::attempt($LoginRequest->only('email','password'))){
-            return $this->sendError('Login failed, please try again.', ['error'=>'Email or Password does not match with our record.']);
+            return Utilities::sendError('Login failed, please try again.', ['error'=>'Email or Password does not match with our record.']);
         }
         // successfull authentication
         $user = User::find(Auth::user()->id);
         $success['token'] =  $user->createToken('appToken')->accessToken;
         $success['user'] =  $user;
-        return $this->sendResponse($success, 'User login successfully.');
+        return Utilities::sendResponse($success, 'User login successfully.');
     }
 
     /**
@@ -53,7 +52,7 @@ class AuthController extends BaseController
     {
         if (Auth::user()) {
             auth()->user()->token()->revoke();
-            return $this->sendResponse([], 'User logout successfully.');
+            return Utilities::sendResponse([], 'User logout successfully.');
         }
     }
 }
