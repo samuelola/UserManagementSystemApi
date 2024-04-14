@@ -45,4 +45,24 @@ class LoginTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);         
     }
 
+    /** @test */
+    public function testUserLoginWithValidCredentials()
+    {
+        $user = User::factory()->make();
+        $credentials = [
+            'name'=>$user->name,
+            'email'=>$user->email,
+            'role_id'=>UserStatus::USER,
+            'password'=>$user->password
+        ];
+        $data = User::create($credentials);
+        $userdetails = [
+            'email' => $data->email,
+            'password' => $user->password
+        ];
+        $this->json('POST', 'api/login', $userdetails)->assertStatus(Response::HTTP_OK);  
+        
+    }
+
+    
 }
