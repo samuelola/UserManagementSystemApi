@@ -55,13 +55,16 @@ php artisan serve
 1. Test Login with Invalid Email.
 2. Test Login with Invalid Password.
 3. Test Login with Invalid Email and Password.
+4. Test Login with user valid Credentials.
 
  #### Tests for Users:
-1. Test for retrieving users details as an Admin.
+1. Test for retrieving user details as an Admin.
 2. Test for an Authenticated user to create users.
 3. Test for an Admin to create users.
-4. Test for retrieving users as an authenticated user.
+4. Test for retrieving user as an authenticated user.
 5. Test for User that is not Admin have permission to delete users.
+6. Test for retrieving all users details as an Admin.
+7. Test for retrieving all users details as a User.
 
 
 ### Step 6 - Run tests
