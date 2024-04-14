@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Enum\UserStatus;
+use App\Libraries\Response;
 
 class RegistrationTest extends TestCase
 {
@@ -17,7 +18,7 @@ class RegistrationTest extends TestCase
     {
         $register = [];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(422);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     
     } 
      /** @test */
@@ -32,7 +33,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'Password1@'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(422);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     
     }
     /** @test */
@@ -47,7 +48,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'Password1@'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(422);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     
     }
     /** @test */
@@ -62,7 +63,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'password'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(422);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     
     }
      
@@ -78,7 +79,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'password2@'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(422);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     
     }
     
@@ -94,7 +95,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'Password1@'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(200);
+            ->assertStatus(Response::HTTP_OK);
     
     }
     /** @test */
@@ -109,7 +110,7 @@ class RegistrationTest extends TestCase
             'password_confirmed' => 'Password1@'
         ];
         $this->json('POST', 'api/register', $register)
-            ->assertStatus(200);
+            ->assertStatus(Response::HTTP_OK);
     
     }
     

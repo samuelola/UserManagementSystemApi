@@ -5,11 +5,13 @@ namespace Tests\Feature;
 use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Enum\UserStatus;
+use App\Libraries\Response;
 
 class LoginTest extends TestCase
 {
     /** @test */
-    public function testUserLoginInValidEmail()
+    public function testUserLoginWithInValidEmail()
     {
         $user = User::factory()->make();
         $data = [
@@ -17,12 +19,11 @@ class LoginTest extends TestCase
             'password' => $user->password
         ];
         $response = $this->postJson('api/login', $data);   
-        $response->assertStatus(422);
-                 
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);    
     }
 
     /** @test */
-    public function testUserLoginInValidPassword()
+    public function testUserLoginWithInValidPassword()
     {
         $user = User::factory()->make();
         $data = [
@@ -30,8 +31,7 @@ class LoginTest extends TestCase
             'password' => ''
         ];
         $response = $this->postJson('api/login', $data);   
-        $response->assertStatus(422);
-                 
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);  
     }
 
     /** @test */
@@ -42,7 +42,7 @@ class LoginTest extends TestCase
             'password' => 'invalid passwword'
         ];
         $response = $this->postJson('api/login', $data);   
-        $response->assertStatus(422);         
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);         
     }
-    
+
 }
