@@ -124,5 +124,31 @@ class UsersTest extends TestCase
         $this->actingAs($userdetails, 'api')->delete('/api/v1/users/'. $userdetails->id)->assertStatus(Response::HTTP_FORBIDDEN);        
     }
 
+    /** @test */
+    public function testGetAllUsersAsAnAdmin (){
+     $user = User::factory()->make();
+     $credentials = [
+          'name'=>$user->name,
+          'email'=>$user->email,
+          'role_id' => UserStatus::ADMIN,
+          'password' => $user->password
+     ];
+     $userdetails = User::create($credentials);
+     $this->actingAs($userdetails, 'api')->getJson('/api/v1/users/')->assertStatus(Response::HTTP_OK);        
+     }
+
+     /** @test */
+    public function testGetAllUsersAsAUser (){
+     $user = User::factory()->make();
+     $credentials = [
+          'name'=>$user->name,
+          'email'=>$user->email,
+          'role_id' => UserStatus::ADMIN,
+          'password' => $user->password
+     ];
+     $userdetails = User::create($credentials);
+     $this->actingAs($userdetails, 'api')->getJson('/api/v1/users/')->assertStatus(Response::HTTP_OK);        
+     }
+
     
 }
