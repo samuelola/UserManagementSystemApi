@@ -17,7 +17,7 @@ class Utilities
             'data'    => $result,
             'message' => $message,
         ];
-        return response()->json($response, 200);
+        return response()->json($response, Response::HTTP_OK);
     }
 
    /**
@@ -26,7 +26,7 @@ class Utilities
     * @return \Illuminate\Http\Response
     */
 
-    public static function sendError($error, $errorMessages = [], $code = 404)
+    public static function sendError($error, $errorMessages = [], $code = Response::HTTP_NOT_FOUND)
     {
         $response = [
             'success' => false,
