@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
-            'email' => 'required|email|email:rfc,dns',
+            'email' => 'required|email',
             'role_id' => 'required',
             'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$!%*?&#]+$/',
         ];
