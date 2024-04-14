@@ -11,8 +11,17 @@ use App\Enum\UserStatus;
 class RegistrationTest extends TestCase
 {
      use WithFaker;
+
+    /** @test */
+    public function testAllEmptyFieldsForRegistration()
+    {
+        $register = [];
+        $this->json('POST', 'api/register', $register)
+            ->assertStatus(422);
+    
+    } 
      /** @test */
-    public function testNameIsEmptyForRegisteration()
+    public function testNameIsEmptyForRegistration()
     {
         $user = User::factory()->make();
         $register = [
@@ -27,7 +36,7 @@ class RegistrationTest extends TestCase
     
     }
     /** @test */
-    public function testNameIsLessThanThreeForRegisteration()
+    public function testNameIsLessThanThreeForRegistration()
     {
         $user = User::factory()->make();
         $register = [
@@ -42,7 +51,7 @@ class RegistrationTest extends TestCase
     
     }
     /** @test */
-    public function testIfPasswordContainNoMixedCharactersAndaCapitalLetterForRegisteration()
+    public function testIfPasswordContainNoMixedCharactersAndaCapitalLetterForRegistration()
     {
         $user = User::factory()->make();
         $register = [
@@ -58,7 +67,7 @@ class RegistrationTest extends TestCase
     }
      
    /** @test */
-    public function testIfPasswordIsNotTheSameAsConfirmPasswordForRegisteration()
+    public function testIfPasswordIsNotTheSameAsConfirmPasswordForRegistration()
     {
         $user = User::factory()->make();
         $register = [
