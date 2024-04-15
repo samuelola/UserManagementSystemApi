@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use App\Enum\UserStatus;
 
 class UserPolicy
 {
@@ -44,7 +45,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        if($user->role_id === 1){
+        if($user->role_id === UserStatus::ADMIN){
             return true;
          }
          return false;
