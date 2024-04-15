@@ -45,7 +45,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        if($user->role_id === UserStatus::ADMIN){
+        if($user->role_id == UserStatus::ADMIN){
             return true;
          }
          return false;
